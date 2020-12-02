@@ -25,7 +25,7 @@ VERSION = 0.4.2
 CPPFLAGS += -MMD -MP -DVERSION=\"$(VERSION)\"
 CXXFLAGS += -O2 -Wall
 CXXFLAGS += -march=native
-LDLIBS += -ljack -lasound -lrt
+LDLIBS += -ljack
 
 
 all:	jack_delay
