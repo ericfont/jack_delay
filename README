@@ -1,0 +1,60 @@
+jack_delay 0.4.2  -  25/08/2018
+-------------------------------
+
+Maintenance release.
+
+
+jack_delay 0.4.0  -  18/04/2011
+-------------------------------
+
+Jack_delay can be used to measure the round-trip latency of a soundcard.
+To do this, start the program and connect like this:
+
+jack_delay -> playback_port -> cable from soundcard output to input -> capture port -> jack_delay
+
+Jack_delay generates a signal consisting of 13 sine waves, measures the
+phase difference between the input and output for each of these, and
+computes the delay from those phase differences. The algorithm used is
+one developed originally for satellite ranging -  that is measuring the
+distance between a satellite and a ground station.
+
+With a good sound card jack_delay will measure the round-trip latency
+with an accuracy of around 1/1000 of a sample. The assumption is that
+the delay is more or less independent of frequency. The actual value
+displayed is the one for a frequency of 1/16 of the sample rate. The
+phase measurement for this frequency of course only provides a result
+in the range of 0..16 samples. The other frequencies are used to extend
+this interval to 4096 * 16 samples, more than a second at 48 kHz.
+This release should be much less sensitive to frequency-dependent delay
+than the previous ones. 
+
+The following options are avaiable (use jack_delay -h to see them):
+
+-O playback port   connect output to named port.
+-I capture port    connect input to named port.
+-E                 show excess latency instead of full latency.
+
+Using -E requires -O and -I, as the the computation depends on
+the latency values reported by jack for the ports used.
+The excess latency is the measured value minus the expected one,
+taking into account any corrections set by jack's -I and -O options.
+That is, if you have the right values for these options, then the
+value displayed with -E will be at most +/- half a sample.
+
+To determine the correct values for jack's -I and -O, set both
+of them to zero ('default' in qjackctl) and measure the latency
+using the -E option. Then set each of the -I and -O options to
+half the value displayed.
+
+-- 
+FA
+
+
+
+
+
+
+
+
+
+
